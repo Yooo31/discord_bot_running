@@ -15,7 +15,7 @@ bot = commands.Bot(command_prefix="!", intents=intents)
 async def on_ready():
   print("Conection Ok!")
 
-@bot.command(name='command_name')
+@bot.command(name='r')
 async def lunch_royaltiz(ctx):
   result = exec(open("./royaltiz.py").read())
   await ctx.channel.send(result)
