@@ -17,7 +17,7 @@ async def on_ready():
 
 @bot.command(name='command_name')
 async def lunch_royaltiz(ctx):
-  result = exec(open("./file_toexec.py").read())
+  result = exec(open("./royaltiz.py").read())
   await ctx.channel.send(result)
 
 bot.run(os.getenv("TOKEN"))

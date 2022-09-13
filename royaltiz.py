@@ -34,8 +34,8 @@ def start(player) :
 
   # Options to run without interface
 
-  # chrome_options.add_argument("--no-sandbox")
-  # chrome_options.add_argument("--headless")
+  chrome_options.add_argument("--no-sandbox")
+  chrome_options.add_argument("--headless")
 
   # Bypass the anti bot
 
@@ -67,3 +67,5 @@ def get_one_player_price(name) :
 
   answer_to_send = ''.join(str(x) for x in all_player_price)
   print(answer_to_send)
+
+run_all_player()
