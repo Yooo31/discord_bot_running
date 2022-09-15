@@ -3,8 +3,9 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 import time
 
+global all_player_price, player_list
+
 player_list = ['DUPONT', 'HOUNKPATIN', 'TANGA', 'LANDU']
-global all_player_price
 all_player_price = []
 
 def open_player_view(player=""):
@@ -60,12 +61,10 @@ def run_all_player() :
     start(actual_player)
 
   answer_to_send = ''.join(str(x) for x in all_player_price)
-  print(answer_to_send)
+  return(answer_to_send)
 
 def get_one_player_price(name) :
   start(name)
 
   answer_to_send = ''.join(str(x) for x in all_player_price)
-  print(answer_to_send)
-
-run_all_player()
+  return(answer_to_send)

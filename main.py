@@ -4,6 +4,8 @@ from dotenv import load_dotenv
 import discord
 from discord.ext import commands
 
+from royaltiz import *
+
 load_dotenv()
 
 intents = discord.Intents.default()
@@ -17,7 +19,7 @@ async def on_ready():
 
 @bot.command(name='r')
 async def lunch_royaltiz(ctx):
-  result = exec(open("./royaltiz.py").read())
+  result = run_all_player()
   await ctx.channel.send(result)
 
 bot.run(os.getenv("TOKEN"))
