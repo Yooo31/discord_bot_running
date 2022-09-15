@@ -5,6 +5,7 @@ import discord
 from discord.ext import commands
 
 from royaltiz import *
+from igraal import *
 
 load_dotenv()
 
@@ -20,6 +21,11 @@ async def on_ready():
 @bot.command(name='r')
 async def lunch_royaltiz(ctx):
   result = run_all_player()
+  await ctx.channel.send(result)
+
+@bot.command(name='igraal')
+async def lunch_igraal(ctx):
+  result = index()
   await ctx.channel.send(result)
 
 bot.run(os.getenv("TOKEN"))
