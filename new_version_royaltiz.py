@@ -49,7 +49,7 @@ def getPlayerPrice(player) :
 def extractJsonPlayerPrice(jsonPlayerPrice) :
   price = jsonPlayerPrice['data']['talentGet']['valuationPrice']
 
-  return price
+  return price/100
 
 def start() :
   all_player = recoverAllPlayer()
