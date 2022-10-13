@@ -51,8 +51,8 @@ def extractJsonPlayerPrice(jsonPlayerPrice) :
 
   return price/100
 
-def start() :
+def start_royaltiz_player() :
   all_player = recoverAllPlayer()
   all_player_price_list = getAllPrice(all_player)
 
-  print(all_player_price_list)
+  return all_player_price_list
