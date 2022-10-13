@@ -4,23 +4,23 @@ from dotenv import load_dotenv
 import requests
 
 load_dotenv()
+all_player_price = []
 
-def recoverAllPlayer() {
+def recoverAllPlayer() :
   player_list = ['DUPONT', 'HOUNKPATIN', 'TANGA', 'LANDU']
 
   return player_list
-}
 
-def getAllPrice(player_list) {
+def getAllPrice(player_list) :
   for player in player_list :
     print('Get ' + player + ' price !')
+
     player_price = getPlayerPrice(player)
-    all_player_price.append(player_price)
+    all_player_price.append(player + ': ' + player_price)
 
   return all_player_price
-}
 
-def getPlayerPrice(player) {
+def getPlayerPrice(player) :
   url = 'https://7l3ovtpgbzgkzg4abhmlgskfji.appsync-api.eu-west-1.amazonaws.com/graphql'
 
   headers = {
@@ -42,22 +42,17 @@ def getPlayerPrice(player) {
   }
 
   response = requests.post(url, json={'query':query ,'variables':variables}, headers=headers)
-  player_price_extracted = extractJsonPlayerPrice(response)
-  return player + ': ' + player_price_extracted
-}
+  player_price_extracted = extractJsonPlayerPrice(response.json())
 
-def extarctJsonPlayerPrice(jsonPlayerPrice) {
-}
+  return str(player_price_extracted) + '€'
 
-extractJsonPlayerPrice(json_file) {
-  price = json_file['data']['talentGet']['valuationPrice']
-  print(price)
-}
+def extractJsonPlayerPrice(jsonPlayerPrice) :
+  price = jsonPlayerPrice['data']['talentGet']['valuationPrice']
 
-def start() {
+  return price
+
+def start() :
   all_player = recoverAllPlayer()
-  getAllPrice(all_player)
-}
+  all_player_price_list = getAllPrice(all_player)
 
-
-
+  print(all_player_price_list)
