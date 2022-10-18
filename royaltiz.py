@@ -5,6 +5,9 @@ import requests
 
 load_dotenv()
 
+global allObjectivPrice
+allObjectivPrice = {"DUPONT": 5, "HOUNKPATIN": 5, "YAN": 5, "LANDU": 5}
+
 def recoverAllPlayer(player) :
   if (player == "") :
     player_list = ['DUPONT', 'HOUNKPATIN', 'YAN', 'LANDU']
@@ -55,8 +58,35 @@ def extractJsonPlayerPrice(jsonPlayerPrice) :
 
   return price/100
 
-def start_royaltiz_player(player) :
+def start_royaltiz_player(player="") :
   all_player = recoverAllPlayer(player)
   all_player_price_list = getAllPrice(all_player)
 
   return all_player_price_list
+
+def convertElement(element) :
+  element.replace(" ", "")
+  element = element.replace("€", "")
+  element = element.split(":")
+
+  return element
+
+def asAugmentation(element) :
+  objectivPrice = allObjectivPrice[element[0]]
+
+  if (objectivPrice <= float(element[1])) :
+    return(element[0] + " dépasse l'objectif (" + str(objectivPrice) + "€) avec un prix de " + element[1] + "€ !!!")
+  else :
+    return ""
+
+def filterTheResult(unfilteredResult) :
+  result = []
+
+  for element in unfilteredResult :
+    element = convertElement(element)
+    element = asAugmentation(element)
+
+    if (element != "") :
+      result.append(element)
+
+  return result

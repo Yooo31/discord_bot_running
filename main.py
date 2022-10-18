@@ -7,7 +7,7 @@ from discord.ext import tasks, commands
 # from discord.ext import tasks as discordTasks
 
 # from royaltiz import *
-from new_version_royaltiz import *
+from royaltiz import *
 from igraal import *
 
 load_dotenv()
@@ -29,20 +29,23 @@ async def task_loop():
   print('Check all price')
   channel = bot.get_channel(1017727497963585536)
   result = start_royaltiz_player()
-  filteredResult = filter_the_result(result)
-  await channel.send(filteredResult)
+  filteredResult = filterTheResult(result)
+  for element in filteredResult :
+    await channel.send(element)
   print('End !')
 
 @bot.command(name='r')
 async def lunch_royaltiz(ctx):
   result = start_royaltiz_player()
-  await ctx.channel.send(result)
+  for element in result :
+    await ctx.channel.send(element)
   print('End !')
 
 @bot.command(name='igraal')
 async def lunch_igraal(ctx):
   result = index()
-  await ctx.channel.send(result)
+  for element in result :
+    await ctx.channel.send(element)
   print('End !')
 
 
