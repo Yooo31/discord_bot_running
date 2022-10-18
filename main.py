@@ -1,9 +1,10 @@
 import os
+import time
 from dotenv import load_dotenv
 
 import discord
-from discord.ext import commands
-from discord.ext import tasks as discordTasks
+from discord.ext import tasks, commands
+# from discord.ext import tasks as discordTasks
 
 # from royaltiz import *
 from new_version_royaltiz import *
@@ -15,10 +16,21 @@ intents = discord.Intents.default()
 intents.message_content = True
 
 bot = commands.Bot(command_prefix="!", intents=intents)
+global time
+time = 0
 
 @bot.event
 async def on_ready():
+  task_loop.start()
   print("Conection Ok!")
+
+@tasks.loop(minutes=15)
+async def task_loop():
+  print('Check all price')
+  channel = bot.get_channel(1017727497963585536)
+  result = start_royaltiz_player()
+  await channel.send(result)
+  print('End !')
 
 @bot.command(name='r')
 async def lunch_royaltiz(ctx):
@@ -32,10 +44,6 @@ async def lunch_igraal(ctx):
   await ctx.channel.send(result)
   print('End !')
 
-@discordTasks.loop(minutes=1.0)
-async def get_evolution():
-  await channel.send('test')
-  print('test')
 
-get_evolution.start()
+
 bot.run(os.getenv("TOKEN"))

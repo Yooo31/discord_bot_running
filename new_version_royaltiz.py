@@ -4,14 +4,15 @@ from dotenv import load_dotenv
 import requests
 
 load_dotenv()
-all_player_price = []
 
 def recoverAllPlayer() :
-  player_list = ['DUPONT', 'HOUNKPATIN', 'TANGA', 'LANDU']
+  player_list = ['DUPONT', 'HOUNKPATIN', 'YAN', 'LANDU']
 
   return player_list
 
 def getAllPrice(player_list) :
+  all_player_price = []
+
   for player in player_list :
     print('Get ' + player + ' price !')
 
