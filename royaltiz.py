@@ -1,70 +1,62 @@
-from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.common.by import By
-import time
+import os
+from dotenv import load_dotenv
 
-global all_player_price, player_list
+import requests
 
-player_list = ['DUPONT', 'HOUNKPATIN', 'TANGA', 'LANDU']
-all_player_price = []
+load_dotenv()
 
-def open_player_view(player=""):
-  print('Opening the ' + player + ' player view')
+def recoverAllPlayer(player) :
+  if (player == "") :
+    player_list = ['DUPONT', 'HOUNKPATIN', 'YAN', 'LANDU']
+  else :
+    player_list = [player]
 
-  driver.get("https://www.royaltiz.com/" + player) # Go to the url of the website
-  time.sleep(5)
+  return player_list
 
-def accept_cookies():
-  print('start cookies')
+def getAllPrice(player_list) :
+  all_player_price = []
 
-  cookie_button = driver.find_element(By.CLASS_NAME, 'cookie-banner-accept-button') # Find the button to accept cookies
-  cookie_button.click()
+  for player in player_list :
+    print('Get ' + player + ' price !')
 
-def get_player_price() :
-  print('Start getting price')
+    player_price = getPlayerPrice(player)
+    all_player_price.append(player + ': ' + player_price)
 
-  player_price = driver.find_element(By.XPATH, '//h3[@data-testid="talent-price"]').text # Find the card that contains the cashback
-  driver.close() # Close the browser
+  return all_player_price
 
-  all_player_price.append(player_price + ' / ')
+def getPlayerPrice(player) :
+  url = 'https://7l3ovtpgbzgkzg4abhmlgskfji.appsync-api.eu-west-1.amazonaws.com/graphql'
 
-def start(player) :
-  all_player_price.append(player + ' = ')
+  headers = {
+    "x-api-key" : os.getenv("ROYALTIZ-KEY")
+  }
 
-  chrome_options = Options()
+  query = """
+    query TalentGet($id: ID!) {
+        talentGet(id: $id) {
+          id
+          valuationPrice
+          fullName
+        }
+    }
+  """
 
-  # Options to run without interface
+  variables = {
+    "id": player
+  }
 
-  chrome_options.add_argument("--no-sandbox")
-  chrome_options.add_argument("--headless")
+  response = requests.post(url, json={'query':query ,'variables':variables}, headers=headers)
+  player_price_extracted = extractJsonPlayerPrice(response.json())
 
-  # Bypass the anti bot
+  return str(player_price_extracted) + '€'
 
-  chrome_options.add_experimental_option("excludeSwitches", ["enable-automation"])
-  chrome_options.add_experimental_option('useAutomationExtension', False)
-  chrome_options.add_argument("--disable-blink-features=AutomationControlled")
+def extractJsonPlayerPrice(jsonPlayerPrice) :
+  price = jsonPlayerPrice['data']['talentGet']['valuationPrice']
 
-  # Create the driver
+  return price/100
 
-  global driver
-  driver = webdriver.Chrome(executable_path="./chromedriver", options=chrome_options)
+def start_royaltiz_player(player) :
+  all_player = recoverAllPlayer(player)
+  all_player_price_list = getAllPrice(all_player)
 
-  # Launch the process
-
-  open_player_view(player)
-  accept_cookies()
-  get_player_price()
-
-def run_all_player() :
-  for actual_player in player_list:
-    print('Check for ' + actual_player)
-    start(actual_player)
-
-  answer_to_send = ''.join(str(x) for x in all_player_price)
-  return(answer_to_send)
-
-def get_one_player_price(name) :
-  start(name)
-
-  answer_to_send = ''.join(str(x) for x in all_player_price)
-  return(answer_to_send)
+  return all_player_price_list

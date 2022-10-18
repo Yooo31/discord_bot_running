@@ -29,7 +29,8 @@ async def task_loop():
   print('Check all price')
   channel = bot.get_channel(1017727497963585536)
   result = start_royaltiz_player()
-  await channel.send(result)
+  filteredResult = filter_the_result(result)
+  await channel.send(filteredResult)
   print('End !')
 
 @bot.command(name='r')
