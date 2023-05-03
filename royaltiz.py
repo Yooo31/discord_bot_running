@@ -6,7 +6,7 @@ import requests
 load_dotenv()
 
 global allObjectivPrice
-allObjectivPrice = {"DUPONT": 5, "HOUNKPATIN": 5, "YAN": 5, "LANDU": 5}
+allObjectivPrice = {"DUPONT": 12, "HOUNKPATIN": 100, "YAN": 5, "LANDU": 5}
 
 def recoverAllPlayer(player) :
   if (player == "") :
